@@ -38,29 +38,46 @@ class Search:
         webbrowser.open(f"{self._url}{self._articles[variant - 1][1]}")
 
 
-while True:
-    for_search = input("Введите слово для поиска: ")
-    if len(for_search) == 0:
-        print("Некорректный ввод. Попробуйте снова\n")
-    else:
-        break
-search = Search(for_search)
-answer = search.get_names()
-if not(answer):
-    print("Ошибка соединения")
-else:
-    f = search.variation()
-    print("\n")
-    if f:
+class User:
+    def __init__(self):
+        self._for_search = None
+
+    def get_search(self):
+        while True:
+            self._for_search = input("Введите слово для поиска: ")
+            if len(self._for_search) == 0:
+                print("Некорректный ввод. Попробуйте снова\n")
+            else:
+                break
+        return self._for_search
+
+    def check_connection(self, ans: object) -> object:
+        if not ans:
+            print("Ошибка соединения")
+            return 0
+        return 1
+
+    def choose_article(self, max_size):
         while True:
             try:
-                c = int(input("Введите номер статьи: "))
+                num = int(input("Введите номер статьи: "))
             except:
                 print("Введены некорректные данные. Повторите попытку\n")
                 continue
-            found_size = search.get_size
-            if c <= 0 or c > found_size:
+            if num <= 0 or num > max_size:
                 print("Введены некорректные данные. Повторите попытку\n")
             else:
-                search.choice(c)
-                break
+                return num
+
+
+user = User()
+request = user.get_search()
+search = Search(request)
+answer = search.get_names()
+if user.check_connection(answer):
+    variants = search.variation()
+    print('\n')
+    if variants:
+        found_size = search.get_size
+        chosen = user.choose_article(found_size)
+        search.choice(chosen)
