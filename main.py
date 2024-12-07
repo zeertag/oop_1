@@ -45,7 +45,7 @@ class User:
     def get_search(self):
         while True:
             self._for_search = input("Введите слово для поиска: ")
-            if len(self._for_search) == 0:
+            if len(self._for_search.strip()) == 0:
                 print("Некорректный ввод. Попробуйте снова\n")
             else:
                 break
